@@ -3,7 +3,8 @@ const route = useRoute()
 const appConfig = useAppConfig()
 const { isHelpSlideoverOpen } = useDashboard()
 
-const links = [{
+const links = [
+  {
   id: 'home',
   label: 'Home',
   icon: 'i-heroicons-home',
@@ -41,43 +42,57 @@ const links = [{
     text: 'Gigs',
     shortcuts: ['B', 'U']
   }
-}, {
-  id: 'settings',
-  label: 'Settings',
-  to: '/settings',
-  icon: 'i-heroicons-cog-8-tooth',
-  children: [{
-    label: 'General',
-    to: '/settings',
-    exact: true
-  }, {
-    label: 'Admins',
-    to: '/settings/members'
-  }, {
-    label: 'Notifications',
-    to: '/settings/notifications'
-  }],
+},
+{
+  id: 'payouts',
+  label: 'Payouts',
+  icon: 'i-heroicons-banknotes',
+  to: '/payouts',
   tooltip: {
-    text: 'Settings',
-    shortcuts: ['G', 'S']
+    text: 'Payouts',
+    shortcuts: ['P', 'U']
   }
-}]
+},
+// {
+//   id: 'settings',
+//   label: 'Settings',
+//   to: '/settings',
+//   icon: 'i-heroicons-cog-8-tooth',
+//   children: [{
+//     label: 'General',
+//     to: '/settings',
+//     exact: true
+//   }, {
+//     label: 'Admins',
+//     to: '/settings/members'
+//   }, {
+//     label: 'Notifications',
+//     to: '/settings/notifications'
+//   }],
+//   tooltip: {
+//     text: 'Settings',
+//     shortcuts: ['G', 'S']
+//   }
+// }
+]
 
-const footerLinks = [{
-  label: 'Add Admin',
-  icon: 'i-heroicons-plus',
-  to: '/settings/members'
-}, {
-  label: 'Help & Support',
-  icon: 'i-heroicons-question-mark-circle',
-  click: () => isHelpSlideoverOpen.value = true
-}]
+const footerLinks = [
+//   {
+//   label: 'Add Admin',
+//   icon: 'i-heroicons-plus',
+//   to: '/settings/members'
+// }, {
+//   label: 'Help & Support',
+//   icon: 'i-heroicons-question-mark-circle',
+//   click: () => isHelpSlideoverOpen.value = true
+// }
+]
 
 const groups = [{
   key: 'links',
   label: 'Go to',
   commands: links.map(link => ({ ...link, shortcuts: link.tooltip?.shortcuts }))
-}, ]
+},]
 
 </script>
 

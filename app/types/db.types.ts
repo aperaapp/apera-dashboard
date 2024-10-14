@@ -11,6 +11,8 @@ export type GigRow = Database["public"]["Tables"]["gigs"]["Row"];
 
 export type GigViewRow = Database["public"]["Views"]["gigs_view"]["Row"];
 
+export type PayoutViewRow = Database["public"]["Views"]["payouts_view"]["Row"];
+
 type DbAction = "INSERT" | "UPDATE" | "DELETE";
 export interface WebhookPayload<T, K extends DbAction> {
   type: K;
