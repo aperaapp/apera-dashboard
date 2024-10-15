@@ -1,7 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   extends: ["@nuxt/ui-pro"],
-
+  nitro: {
+    preset: "cloudflare_pages",
+  },
   modules: [
     "@nuxt/eslint",
     "@nuxt/fonts",
@@ -48,4 +50,3 @@ export default defineNuxtConfig({
 
   compatibilityDate: "2024-07-11",
 });
-
