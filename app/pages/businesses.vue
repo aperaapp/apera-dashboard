@@ -37,7 +37,7 @@ const q = ref('')
 const selected = ref<User[]>([])
 const selectedColumns = ref(defaultColumns)
 const selectedLocations = ref([])
-const sort = ref({ column: 'id', direction: 'asc' as const })
+const sort = ref({ column: 'created_at', direction: 'desc' as const })
 const input = ref<{ input: HTMLInputElement }>()
 
 const columns = computed(() => defaultColumns.filter(column => selectedColumns.value.includes(column)))
