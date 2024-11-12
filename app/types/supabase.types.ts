@@ -18,6 +18,7 @@ export type Database = {
           email: string
           full_name: string | null
           id: string
+          is_deleted: boolean
           payment_method_id: string | null
           phone_is_verified: boolean
           phone_number: string | null
@@ -31,6 +32,7 @@ export type Database = {
           email: string
           full_name?: string | null
           id?: string
+          is_deleted?: boolean
           payment_method_id?: string | null
           phone_is_verified?: boolean
           phone_number?: string | null
@@ -44,63 +46,13 @@ export type Database = {
           email?: string
           full_name?: string | null
           id?: string
+          is_deleted?: boolean
           payment_method_id?: string | null
           phone_is_verified?: boolean
           phone_number?: string | null
           stripe_customer_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "businesses_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      failed_gig_assignments: {
-        Row: {
-          created_at: string
-          gig_id: string
-          id: string
-          last_retry: string | null
-        }
-        Insert: {
-          created_at?: string
-          gig_id: string
-          id?: string
-          last_retry?: string | null
-        }
-        Update: {
-          created_at?: string
-          gig_id?: string
-          id?: string
-          last_retry?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "failed_gig_assignments_gig_id_fkey"
-            columns: ["gig_id"]
-            isOneToOne: false
-            referencedRelation: "failed_gig_assignments_view"
-            referencedColumns: ["gig_id"]
-          },
-          {
-            foreignKeyName: "failed_gig_assignments_gig_id_fkey"
-            columns: ["gig_id"]
-            isOneToOne: false
-            referencedRelation: "gigs"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "failed_gig_assignments_gig_id_fkey"
-            columns: ["gig_id"]
-            isOneToOne: false
-            referencedRelation: "gigs_view"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       failed_gig_matches: {
         Row: {
@@ -129,13 +81,6 @@ export type Database = {
             foreignKeyName: "failed_gig_matches_gig_id_fkey"
             columns: ["gig_id"]
             isOneToOne: false
-            referencedRelation: "failed_gig_assignments_view"
-            referencedColumns: ["gig_id"]
-          },
-          {
-            foreignKeyName: "failed_gig_matches_gig_id_fkey"
-            columns: ["gig_id"]
-            isOneToOne: false
             referencedRelation: "gigs"
             referencedColumns: ["id"]
           },
@@ -144,59 +89,6 @@ export type Database = {
             columns: ["gig_id"]
             isOneToOne: false
             referencedRelation: "gigs_view"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      gig_assignments: {
-        Row: {
-          assigned_at: string
-          gig_id: string
-          id: string
-          state: Database["public"]["Enums"]["acceptance_state"]
-          worker_id: string
-        }
-        Insert: {
-          assigned_at?: string
-          gig_id: string
-          id?: string
-          state?: Database["public"]["Enums"]["acceptance_state"]
-          worker_id: string
-        }
-        Update: {
-          assigned_at?: string
-          gig_id?: string
-          id?: string
-          state?: Database["public"]["Enums"]["acceptance_state"]
-          worker_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "gig_assignments_gig_id_fkey"
-            columns: ["gig_id"]
-            isOneToOne: false
-            referencedRelation: "failed_gig_assignments_view"
-            referencedColumns: ["gig_id"]
-          },
-          {
-            foreignKeyName: "gig_assignments_gig_id_fkey"
-            columns: ["gig_id"]
-            isOneToOne: false
-            referencedRelation: "gigs"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "gig_assignments_gig_id_fkey"
-            columns: ["gig_id"]
-            isOneToOne: false
-            referencedRelation: "gigs_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "gig_assignments_worker_id_fkey"
-            columns: ["worker_id"]
-            isOneToOne: false
-            referencedRelation: "workers"
             referencedColumns: ["id"]
           },
         ]
@@ -205,7 +97,9 @@ export type Database = {
         Row: {
           assigned_worker_id: string | null
           business_id: string
+          clock_in_by: string | null
           clock_in_time: string | null
+          clock_out_by: string | null
           clock_out_time: string | null
           created_at: string
           day: string
@@ -224,11 +118,14 @@ export type Database = {
           start_time: string
           status: Database["public"]["Enums"]["work_status"]
           title: string
+          worker_rating: number
         }
         Insert: {
           assigned_worker_id?: string | null
           business_id: string
+          clock_in_by?: string | null
           clock_in_time?: string | null
+          clock_out_by?: string | null
           clock_out_time?: string | null
           created_at?: string
           day: string
@@ -247,11 +144,14 @@ export type Database = {
           start_time: string
           status?: Database["public"]["Enums"]["work_status"]
           title: string
+          worker_rating?: number
         }
         Update: {
           assigned_worker_id?: string | null
           business_id?: string
+          clock_in_by?: string | null
           clock_in_time?: string | null
+          clock_out_by?: string | null
           clock_out_time?: string | null
           created_at?: string
           day?: string
@@ -270,6 +170,7 @@ export type Database = {
           start_time?: string
           status?: Database["public"]["Enums"]["work_status"]
           title?: string
+          worker_rating?: number
         }
         Relationships: [
           {
@@ -287,13 +188,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "gigs_business_id_fkey"
-            columns: ["business_id"]
-            isOneToOne: false
-            referencedRelation: "gig_assignments_view"
-            referencedColumns: ["business_id"]
-          },
-          {
             foreignKeyName: "gigs_matched_worker_id_fkey"
             columns: ["matched_worker_id"]
             isOneToOne: false
@@ -301,6 +195,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      members: {
+        Row: {
+          access: string
+          created_at: string
+          id: number
+          last_login: string | null
+          name: string
+          password: string
+          username: string
+        }
+        Insert: {
+          access?: string
+          created_at?: string
+          id?: number
+          last_login?: string | null
+          name: string
+          password: string
+          username: string
+        }
+        Update: {
+          access?: string
+          created_at?: string
+          id?: number
+          last_login?: string | null
+          name?: string
+          password?: string
+          username?: string
+        }
+        Relationships: []
       }
       payouts: {
         Row: {
@@ -354,20 +278,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "payouts_business_id_fkey"
-            columns: ["business_id"]
-            isOneToOne: false
-            referencedRelation: "gig_assignments_view"
-            referencedColumns: ["business_id"]
-          },
-          {
-            foreignKeyName: "payouts_gig_id_fkey"
-            columns: ["gig_id"]
-            isOneToOne: false
-            referencedRelation: "failed_gig_assignments_view"
-            referencedColumns: ["gig_id"]
-          },
-          {
             foreignKeyName: "payouts_gig_id_fkey"
             columns: ["gig_id"]
             isOneToOne: false
@@ -390,6 +300,62 @@ export type Database = {
           },
         ]
       }
+      specialties: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: number
+          image: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          image?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          image?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      worker_location: {
+        Row: {
+          last_location: unknown | null
+          latitude: number
+          longitude: number
+          updated_at: string | null
+          worker_id: string
+        }
+        Insert: {
+          last_location?: unknown | null
+          latitude: number
+          longitude: number
+          updated_at?: string | null
+          worker_id: string
+        }
+        Update: {
+          last_location?: unknown | null
+          latitude?: number
+          longitude?: number
+          updated_at?: string | null
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "worker_location_worker_id_fkey"
+            columns: ["worker_id"]
+            isOneToOne: true
+            referencedRelation: "workers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workers: {
         Row: {
           avatar: string | null
@@ -400,6 +366,7 @@ export type Database = {
           email: string
           full_name: string | null
           id: string
+          is_deleted: boolean
           last_location: unknown | null
           last_location_updated_at: string | null
           latitude: number | null
@@ -420,6 +387,7 @@ export type Database = {
           email: string
           full_name?: string | null
           id?: string
+          is_deleted?: boolean
           last_location?: unknown | null
           last_location_updated_at?: string | null
           latitude?: number | null
@@ -440,6 +408,7 @@ export type Database = {
           email?: string
           full_name?: string | null
           id?: string
+          is_deleted?: boolean
           last_location?: unknown | null
           last_location_updated_at?: string | null
           latitude?: number | null
@@ -451,125 +420,10 @@ export type Database = {
           status?: Database["public"]["Enums"]["worker_status"]
           stripe_account_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "workers_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {
-      failed_gig_assignments_view: {
-        Row: {
-          assigned_worker_id: string | null
-          business_id: string | null
-          clock_in_time: string | null
-          clock_out_time: string | null
-          day: string | null
-          description: string | null
-          end_time: string | null
-          extra_instructions: string | null
-          failed_assignment_created_at: string | null
-          failed_assignment_id: string | null
-          gig_id: string | null
-          gig_status: Database["public"]["Enums"]["work_status"] | null
-          hourly_pay: number | null
-          last_retry: string | null
-          location: unknown | null
-          location_name: string | null
-          required_specialties: string[] | null
-          start_time: string | null
-          title: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "gigs_assigned_worker_id_fkey"
-            columns: ["assigned_worker_id"]
-            isOneToOne: false
-            referencedRelation: "workers"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "gigs_business_id_fkey"
-            columns: ["business_id"]
-            isOneToOne: false
-            referencedRelation: "businesses"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "gigs_business_id_fkey"
-            columns: ["business_id"]
-            isOneToOne: false
-            referencedRelation: "gig_assignments_view"
-            referencedColumns: ["business_id"]
-          },
-        ]
-      }
-      gig_assignments_view: {
-        Row: {
-          assigned_at: string | null
-          business_id: string | null
-          business_name: string | null
-          gig_day: string | null
-          gig_description: string | null
-          gig_end_time: string | null
-          gig_extra_instructions: string | null
-          gig_hourly_pay: number | null
-          gig_id: string | null
-          gig_latitude: number | null
-          gig_location_name: string | null
-          gig_longitude: number | null
-          gig_required_specialties: string[] | null
-          gig_start_time: string | null
-          gig_title: string | null
-          id: string | null
-          state: Database["public"]["Enums"]["acceptance_state"] | null
-          worker_email: string | null
-          worker_id: string | null
-          worker_name: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "businesses_id_fkey"
-            columns: ["business_id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "gig_assignments_gig_id_fkey"
-            columns: ["gig_id"]
-            isOneToOne: false
-            referencedRelation: "gigs"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "gig_assignments_gig_id_fkey"
-            columns: ["gig_id"]
-            isOneToOne: false
-            referencedRelation: "failed_gig_assignments_view"
-            referencedColumns: ["gig_id"]
-          },
-          {
-            foreignKeyName: "gig_assignments_gig_id_fkey"
-            columns: ["gig_id"]
-            isOneToOne: false
-            referencedRelation: "gigs_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "gig_assignments_worker_id_fkey"
-            columns: ["worker_id"]
-            isOneToOne: false
-            referencedRelation: "workers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       gigs_view: {
         Row: {
           assigned_worker_id: string | null
@@ -612,13 +466,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "gigs_business_id_fkey"
-            columns: ["business_id"]
-            isOneToOne: false
-            referencedRelation: "gig_assignments_view"
-            referencedColumns: ["business_id"]
-          },
-          {
             foreignKeyName: "gigs_matched_worker_id_fkey"
             columns: ["matched_worker_id"]
             isOneToOne: false
@@ -653,25 +500,11 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "payouts_business_id_fkey"
-            columns: ["business_id"]
-            isOneToOne: false
-            referencedRelation: "gig_assignments_view"
-            referencedColumns: ["business_id"]
-          },
-          {
             foreignKeyName: "payouts_gig_id_fkey"
             columns: ["gig_id"]
             isOneToOne: false
             referencedRelation: "gigs"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "payouts_gig_id_fkey"
-            columns: ["gig_id"]
-            isOneToOne: false
-            referencedRelation: "failed_gig_assignments_view"
-            referencedColumns: ["gig_id"]
           },
           {
             foreignKeyName: "payouts_gig_id_fkey"
@@ -697,6 +530,23 @@ export type Database = {
           point2: unknown
         }
         Returns: number
+      }
+      find_nearby_open_gigs_by_coords: {
+        Args: {
+          lat: number
+          long: number
+          radius?: number
+        }
+        Returns: {
+          id: string
+          location: unknown
+          required_specialties: string[]
+          status: Database["public"]["Enums"]["work_status"]
+          start_time: string
+          end_time: string
+          day: string
+          distance: number
+        }[]
       }
       find_nearby_workers: {
         Args: {
@@ -727,6 +577,29 @@ export type Database = {
           email: string
           stripe_account_id: string
           phone_number: string
+          status: Database["public"]["Enums"]["worker_status"]
+          coordinates: string
+          distance: number
+          rating: number
+        }[]
+      }
+      find_nearby_workers_by_coords_2: {
+        Args: {
+          lat: number
+          long: number
+          radius?: number
+        }
+        Returns: {
+          id: string
+          last_location: unknown
+          specialties: string[]
+          payouts_enabled: boolean
+          details_submitted: boolean
+          charges_enabled: boolean
+          email: string
+          stripe_account_id: string
+          phone_number: string
+          status: Database["public"]["Enums"]["worker_status"]
           coordinates: string
           distance: number
         }[]
@@ -751,6 +624,14 @@ export type Database = {
           longitude: number
         }
         Returns: string
+      }
+      get_persons: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: number
+          name: string
+          current_mood: Database["public"]["Enums"]["mood"]
+        }[]
       }
       select_suitable_worker:
         | {
@@ -786,6 +667,7 @@ export type Database = {
     }
     Enums: {
       acceptance_state: "accepted" | "rejected" | "pending"
+      mood: "happy" | "sad" | "excited" | "calm"
       online_status: "online" | "offline"
       payout_status: "pending" | "completed"
       work_status:
@@ -887,4 +769,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

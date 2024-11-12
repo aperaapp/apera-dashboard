@@ -5,87 +5,87 @@ const { isHelpSlideoverOpen } = useDashboard()
 
 const links = [
   {
-  id: 'home',
-  label: 'Home',
-  icon: 'i-heroicons-home',
-  to: '/',
-  tooltip: {
-    text: 'Home',
-    shortcuts: ['G', 'H']
+    id: 'home',
+    label: 'Home',
+    icon: 'i-heroicons-home',
+    to: '/',
+    tooltip: {
+      text: 'Home',
+      shortcuts: ['G', 'H']
+    }
+  }, {
+    id: 'businesses',
+    label: 'Businesses',
+    icon: 'i-heroicons-briefcase',
+    to: '/business',
+    tooltip: {
+      text: 'Business',
+      shortcuts: ['B', 'U']
+    }
+  },
+  {
+    id: 'workers',
+    label: 'Workers',
+    icon: 'i-heroicons-user-group',
+    to: '/workers',
+    tooltip: {
+      text: 'Workers',
+      shortcuts: ['W', 'U']
+    }
   }
-}, {
-  id: 'businesses',
-  label: 'Businesses',
-  icon: 'i-heroicons-briefcase',
-  to: '/businesses',
-  tooltip: {
-    text: 'Business',
-    shortcuts: ['B', 'U']
-  }
-},
-{
-  id: 'workers',
-  label: 'Workers',
-  icon: 'i-heroicons-user-group',
-  to: '/workers',
-  tooltip: {
-    text: 'Workers',
-    shortcuts: ['W', 'U']
-  }
-}
   , {
-  id: 'gigs',
-  label: 'Gigs',
-  icon: 'i-heroicons-square-3-stack-3d',
-  to: '/gigs',
-  tooltip: {
-    text: 'Gigs',
-    shortcuts: ['B', 'U']
-  }
-},
-{
-  id: 'payouts',
-  label: 'Payouts',
-  icon: 'i-heroicons-banknotes',
-  to: '/payouts',
-  tooltip: {
-    text: 'Payouts',
-    shortcuts: ['P', 'U']
-  }
-},
-// {
-//   id: 'settings',
-//   label: 'Settings',
-//   to: '/settings',
-//   icon: 'i-heroicons-cog-8-tooth',
-//   children: [{
-//     label: 'General',
-//     to: '/settings',
-//     exact: true
-//   }, {
-//     label: 'Admins',
-//     to: '/settings/members'
-//   }, {
-//     label: 'Notifications',
-//     to: '/settings/notifications'
-//   }],
-//   tooltip: {
-//     text: 'Settings',
-//     shortcuts: ['G', 'S']
-//   }
-// }
+    id: 'gigs',
+    label: 'Gigs',
+    icon: 'i-heroicons-square-3-stack-3d',
+    to: '/gigs',
+    tooltip: {
+      text: 'Gigs',
+      shortcuts: ['B', 'U']
+    }
+  },
+  {
+    id: 'payouts',
+    label: 'Payouts',
+    icon: 'i-heroicons-banknotes',
+    to: '/payouts',
+    tooltip: {
+      text: 'Payouts',
+      shortcuts: ['P', 'U']
+    }
+  },
+  // {
+  //   id: 'settings',
+  //   label: 'Settings',
+  //   to: '/settings',
+  //   icon: 'i-heroicons-cog-8-tooth',
+  //   children: [{
+  //     label: 'General',
+  //     to: '/settings',
+  //     exact: true
+  //   }, {
+  //     label: 'Admins',
+  //     to: '/settings/members'
+  //   }, {
+  //     label: 'Notifications',
+  //     to: '/settings/notifications'
+  //   }],
+  //   tooltip: {
+  //     text: 'Settings',
+  //     shortcuts: ['G', 'S']
+  //   }
+  // }
 ]
 
 const footerLinks = [
-//   {
-//   label: 'Add Admin',
-//   icon: 'i-heroicons-plus',
-//   to: '/settings/members'
-// }, {
-//   label: 'Help & Support',
-//   icon: 'i-heroicons-question-mark-circle',
-//   click: () => isHelpSlideoverOpen.value = true
-// }
+  {
+    label: 'Add Admin',
+    icon: 'i-heroicons-plus',
+    to: '/settings/members'
+  }, {
+    label: 'Help & Support',
+    icon: 'i-heroicons-question-mark-circle',
+    click: () => isHelpSlideoverOpen.value = true
+  }
 ]
 
 const groups = [{

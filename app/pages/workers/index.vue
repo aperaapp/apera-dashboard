@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { User } from '~/types'
-import type { BusinessRow } from '~/types/db.types';
+import type { WorkerRow } from '~/types/db.types';
 import type { Database } from '~/types/supabase.types';
 
 const defaultColumns = [
@@ -9,7 +9,7 @@ const defaultColumns = [
     label: '#'
   },
   {
-    key: 'stripe_customer_id',
+    key: 'stripe_account_id',
     label: 'Stripe ID'
   },
   {
@@ -28,8 +28,8 @@ const defaultColumns = [
     sortable: true
   },
   {
-    key: 'address',
-    label: 'Address'
+    key: 'specialties',
+    label: 'Specialties'
   },
 ]
 
@@ -37,28 +37,24 @@ const q = ref('')
 const selected = ref<User[]>([])
 const selectedColumns = ref(defaultColumns)
 const selectedLocations = ref([])
-const sort = ref({ column: 'created_at', direction: 'desc' as const })
+const sort = ref({ column: 'id', direction: 'asc' as const })
 const input = ref<{ input: HTMLInputElement }>()
 
 const columns = computed(() => defaultColumns.filter(column => selectedColumns.value.includes(column)))
 
 const client = useSupabaseClient<Database>();
 
-const { data: businesses, error } = await useAsyncData('businesses', async () => {
-  const { data } = await client.from('businesses').select().order("created_at", { ascending: true });
+const { data: workers, error } = await useAsyncData('workers', async () => {
+  const { data } = await client.from('workers').select().order("created_at", { ascending: true });
   return data;
 });
 
 const filterSorted = computed(() => {
-  return businesses.value.filter((business) => {
+  return workers.value.filter((worker) => {
     console.log(q.value)
     if (!q.value) return true
 
-    return business.full_name?.search(new RegExp(q.value, 'i')) !== -1 || business.email.search(new RegExp(q.value, 'i')) !== -1
-  }).filter((business) => {
-    if (!selectedLocations.value?.length) return true
-
-    return selectedLocations.value.includes(business.address)
+    return worker.full_name?.search(new RegExp(q.value, 'i')) !== -1 || worker.email.search(new RegExp(q.value, 'i')) !== -1
   }).sort((a, b) => {
     if (!sort.value.column) return 0
 
@@ -71,13 +67,6 @@ const filterSorted = computed(() => {
   })
 })
 
-const defaultLocations = businesses.value.reduce((acc, business: NonNullable<BusinessRow>) => {
-  if (!acc.includes(business.address)) {
-    acc.push(business.address)
-  }
-  return acc
-}, [] as string[])
-
 
 
 defineShortcuts({
@@ -87,12 +76,13 @@ defineShortcuts({
 })
 
 
-const selectedBusiness = ref<BusinessRow | null>(null)
-const showBusinessDetails = ref(false)
-
-function onSelectRow(row: BusinessRow) {
-  selectedBusiness.value = row
-  showBusinessDetails.value = true
+const selectedWorker = ref<WorkerRow | null>(null)
+const showWorkerDetails = ref(false)
+const router = useRouter()
+function onSelectRow(row: WorkerRow) {
+  router.push(`/workers/${row.id}`)
+  // selectedWorker.value = row
+  // showWorkerDetails.value = true
 }
 
 </script>
@@ -100,10 +90,10 @@ function onSelectRow(row: BusinessRow) {
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Businesses" :badge="businesses.length">
+      <UDashboardNavbar title="Workers" :badge="workers.length">
         <template #right>
-          <UInput ref="input" v-model="q" icon="i-heroicons-funnel" autocomplete="off"
-            placeholder="Filter businesses..." class="hidden lg:block" @keydown.esc="$event.target.blur()">
+          <UInput ref="input" v-model="q" icon="i-heroicons-funnel" autocomplete="off" placeholder="Filter workers..."
+            class="hidden lg:block" @keydown.esc="$event.target.blur()">
             <template #trailing>
               <UKbd value="/" />
             </template>
@@ -113,11 +103,6 @@ function onSelectRow(row: BusinessRow) {
       </UDashboardNavbar>
 
       <UDashboardToolbar>
-        <template #left>
-          <USelectMenu v-model="selectedLocations" icon="i-heroicons-map-pin" placeholder="Location"
-            :options="defaultLocations" multiple />
-        </template>
-
         <template #right>
           <USelectMenu v-model="selectedColumns" icon="i-heroicons-adjustments-horizontal-solid"
             :options="defaultColumns" multiple class="hidden lg:block">
@@ -146,30 +131,47 @@ function onSelectRow(row: BusinessRow) {
             <span class="text-gray-900 dark:text-white font-medium">{{ row.full_name }}</span>
           </div>
         </template>
+        <template #specialties-data="{ row }">
+          <div class="flex items-center gap-3">
+            <span class="text-gray-900 dark:text-white font-medium">
+              <span v-if="row.specialties"> {{
+                row.specialties.slice(0, 2).join(", ")
+                }}
+              </span>
+              <span v-if="!row.specialties" class="opacity-10"> Empty </span>
+              <span v-if="row.specialties && row.specialties.length > 3" class="ml-2">
+                <UKbd>
+                  {{ row.specialties?.length <= 3 ? "" : `+${row.specialties?.slice(2).length} more` }} </UKbd>
+              </span>
+            </span>
+
+
+          </div>
+        </template>
       </UTable>
     </UDashboardPanel>
   </UDashboardPage>
-  <USlideover v-model="showBusinessDetails">
+  <USlideover v-model="showWorkerDetails">
     <div class="max-h-screen">
       <UButton color="gray" variant="ghost" size="sm" icon="i-heroicons-x-mark-20-solid"
         class="flex sm:hidden absolute end-5 top-5 z-10" square padded @click="() => {
           console.log('Closing popover');
-          selectedBusiness = null
-          showBusinessDetails = false
+          showWorkerDetails = null
+          showWorkerDetails = false
 
         }" label="Close" />
       <div class="h-full w-full overflow-y-auto">
         <div class="pt-4 grid place-items-center gap-2">
-          <UAvatar size="xl" :src="selectedBusiness.avatar" :alt="selectedBusiness.full_name" />
-          <p class="font-bold md:text-lg text-center">{{ selectedBusiness.full_name }}</p>
+          <UAvatar size="xl" :src="selectedWorker.avatar" :alt="selectedWorker.full_name" />
+          <p class="font-bold md:text-lg text-center">{{ selectedWorker.full_name }}</p>
         </div>
         <div class="w-full space-y">
-          <ListItem label="ID" :value="selectedBusiness.id" />
-          <ListItem label="Stripe Customer ID" :value="selectedBusiness.stripe_customer_id" />
-          <ListItem label="Created At" :value="new Date(selectedBusiness.created_at).toDateString()" />
-          <ListItem label="Email" :value="selectedBusiness.email" />
-          <ListItem label="Phone Number" :value="'+' + selectedBusiness.phone_number" />
-          <ListItem label="Address" :value="selectedBusiness.address" />
+          <ListItem label="ID" :value="selectedWorker.id" />
+          <ListItem label="Stripe Account ID" :value="selectedWorker.stripe_account_id" />
+          <ListItem label="Created At" :value="new Date(selectedWorker.created_at).toDateString()" />
+          <ListItem label="Email" :value="selectedWorker.email" />
+          <ListItem label="Phone Number" :value="'+' + selectedWorker.phone_number" />
+          <ListItem label="Specialties" :value="selectedWorker.specialties.join(', ')" />
         </div>
         <UCard class="m-4">
           <template #header>

@@ -3,16 +3,17 @@
     <p class="text-gray-400 dark:text-gray-500 line-clamp-1">
       {{ label }}
     </p>
-    <p class="font-medium">
+    <p v-if="value" class="font-medium">
       {{ value }}
     </p>
+    <slot> </slot>
   </div>
 </template>
 
 <script setup lang="ts">
 const { label, value } = defineProps<{
   label: string;
-  value: string | number
+  value?: string | number
 }>();
 </script>
 

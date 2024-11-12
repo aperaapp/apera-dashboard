@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@vueuse/nuxt",
     "@nuxtjs/supabase",
+    "@hebilicious/vue-query-nuxt",
   ],
 
   ui: {
