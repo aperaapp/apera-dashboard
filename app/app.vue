@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Toaster, toast } from 'vue-sonner'
+
 const colorMode = useColorMode()
 
 const color = computed(() => colorMode.value === 'dark' ? '#111827' : 'white')
@@ -29,6 +31,7 @@ useSeoMeta({
 </script>
 
 <template>
+  <Toaster position="top-right" rich-colors />
   <div>
     <NuxtLoadingIndicator />
 

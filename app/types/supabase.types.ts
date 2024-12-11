@@ -54,6 +54,33 @@ export type Database = {
         }
         Relationships: []
       }
+      dashboard_users: {
+        Row: {
+          avatar: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          role: string
+        }
+        Insert: {
+          avatar?: string | null
+          created_at?: string
+          email?: string | null
+          id: string
+          name: string
+          role: string
+        }
+        Update: {
+          avatar?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          role?: string
+        }
+        Relationships: []
+      }
       failed_gig_matches: {
         Row: {
           created_at: string
@@ -195,36 +222,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      members: {
-        Row: {
-          access: string
-          created_at: string
-          id: number
-          last_login: string | null
-          name: string
-          password: string
-          username: string
-        }
-        Insert: {
-          access?: string
-          created_at?: string
-          id?: number
-          last_login?: string | null
-          name: string
-          password: string
-          username: string
-        }
-        Update: {
-          access?: string
-          created_at?: string
-          id?: number
-          last_login?: string | null
-          name?: string
-          password?: string
-          username?: string
-        }
-        Relationships: []
       }
       payouts: {
         Row: {
@@ -604,58 +601,6 @@ export type Database = {
           distance: number
         }[]
       }
-      find_nearby_workers_wkb: {
-        Args: {
-          search_point: string
-          radius?: number
-        }
-        Returns: {
-          id: string
-          last_location: unknown
-          specialties: string[]
-          coordinates: string
-          distance: number
-        }[]
-      }
-      get_best_worker: {
-        Args: {
-          search_specialties: string[]
-          latitude: number
-          longitude: number
-        }
-        Returns: string
-      }
-      get_persons: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          id: number
-          name: string
-          current_mood: Database["public"]["Enums"]["mood"]
-        }[]
-      }
-      select_suitable_worker:
-        | {
-            Args: {
-              search_specialties: string[]
-              nearby_workers: unknown
-            }
-            Returns: {
-              worker_id: string
-              location: unknown
-              distance: number
-            }[]
-          }
-        | {
-            Args: {
-              search_specialties: string[]
-              worker_ids: string[]
-            }
-            Returns: {
-              worker_id: string
-              location: unknown
-              distance: number
-            }[]
-          }
       set_worker_location: {
         Args: {
           p_worker_id: string

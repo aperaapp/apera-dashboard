@@ -27,6 +27,9 @@ export type NearbyWorkerReturn =
 
 export type PayoutInsert = Database["public"]["Tables"]["payouts"]["Insert"];
 
+export type DashboardUserRow =
+  Database["public"]["Tables"]["dashboard_users"]["Row"];
+
 export interface AuthUser {
   id: string;
   aud: string;
@@ -70,4 +73,13 @@ interface Raw_app_meta_data {
 }
 interface Raw_user_meta_data {
   account_type: string;
+}
+
+export interface EdgeFxResponse<
+  T extends Record<any, any> | any[] | string | null,
+> {
+  success: boolean;
+  message?: string;
+  error?: string;
+  data?: T;
 }

@@ -11,6 +11,8 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@nuxtjs/supabase",
     "@hebilicious/vue-query-nuxt",
+    "vue-sonner/nuxt",
+    "@pinia/nuxt",
   ],
 
   ui: {
@@ -38,7 +40,7 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   supabase: {
-    redirect: false,
+    redirect: true,
   },
   eslint: {
     config: {

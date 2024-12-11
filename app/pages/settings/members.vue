@@ -1,44 +1,98 @@
 <script setup lang="ts">
-import type { Member } from '~/types'
+import type { Member } from "~/types";
+import type { Database } from "~/types/supabase.types";
+const client = useSupabaseClient<Database>();
 
-const { data: members } = await useFetch<Member[]>('/api/members', { default: () => [] })
+const q = ref("");
+const isInviteModalOpen = ref(false);
 
-const q = ref('')
-const isInviteModalOpen = ref(false)
+const {
+  data: admins,
+  isLoading,
+  refetch,
+  error,
+} = useQuery({
+  queryKey: ["admins"],
+  queryFn: async () => {
+    const { data, error } = await client.from("dashboard_users").select();
+    if (error) {
+      throw error;
+    }
+    if (!data) {
+      throw new Error("No data returned");
+    }
+    return data;
+  },
+});
 
 const filteredMembers = computed(() => {
-  return members.value.filter((member) => {
-    return member.name.search(new RegExp(q.value, 'i')) !== -1 || member.username.search(new RegExp(q.value, 'i')) !== -1
-  })
-})
+  if (!admins.value) return [];
 
-
-const adminsQuery = useQuery({
-
-})
-
+  return admins.value.filter((admin) => {
+    return (
+      admin.name.search(new RegExp(q.value, "i")) !== -1 ||
+      admin.email.search(new RegExp(q.value, "i")) !== -1
+    );
+  });
+});
 </script>
 
 <template>
   <UDashboardPanelContent class="pb-24">
-    <UDashboardSection title="Manage access" description="Invite new members by email address." orientation="horizontal"
-      :ui="{ container: 'lg:sticky top-2' }">
+    <UDashboardSection
+      title="Manage access"
+      description="Invite new members by email address."
+      orientation="horizontal"
+      :ui="{ container: 'lg:sticky top-2' }"
+    >
       <template #links>
-        <UButton label="Invite people" color="black" @click="isInviteModalOpen = true" />
+        <UButton
+          label="Add Admin"
+          color="black"
+          @click="isInviteModalOpen = true"
+        />
       </template>
 
-      <UCard :ui="{ header: { padding: 'p-4 sm:px-6' }, body: { padding: '' } }" class="min-w-0">
+      <UCard
+        :ui="{ header: { padding: 'p-4 sm:px-6' }, body: { padding: '' } }"
+        class="min-w-0"
+      >
         <template #header>
-          <UInput v-model="q" icon="i-heroicons-magnifying-glass" placeholder="Search admins" autofocus />
+          <UInput
+            v-model="q"
+            icon="i-heroicons-magnifying-glass"
+            placeholder="Search admins"
+            autofocus
+          />
         </template>
 
         <!-- ~/components/settings/MembersList.vue -->
-        <SettingsMembersList :members="filteredMembers" />
+        <div class="w-full space-y-2 p-4" v-if="isLoading">
+          <USkeleton
+            v-for="(i, index) in new Array(5).fill(0)"
+            :key="index"
+            class="h-[60px] w-full"
+            :ui="{ rounded: 'rounded-md' }"
+          />
+        </div>
+        <ErrorCard
+          v-if="error"
+          title="Error fetching memebers"
+          :message="error.message"
+        />
+        <SettingsMembersList
+          v-if="filteredMembers"
+          :members="filteredMembers"
+        />
       </UCard>
     </UDashboardSection>
 
-    <UDashboardModal v-model="isInviteModalOpen" title="Invite people" description="Invite new members by email address"
-      :ui="{ width: 'sm:max-w-md' }">
+    <UDashboardModal
+      v-model="isInviteModalOpen"
+      title="Create Admin Account"
+      description="Admins have access to the dashbaord"
+      :ui="{ width: 'sm:max-w-md' }"
+    >
       <!-- ~/components/settings/MembersForm.vue -->
       <SettingsMembersForm @close="isInviteModalOpen = false" />
     </UDashboardModal>
