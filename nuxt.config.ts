@@ -41,7 +41,7 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   supabase: {
-    redirect: false,
+    redirect: true,
   },
   eslint: {
     config: {

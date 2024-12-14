@@ -2,22 +2,8 @@ import type { Database } from "~/types/supabase.types";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const userStore = useUserStore();
-
   if (userStore.profile) return;
   loadProfile();
-  console.log({ to });
-
-  // if (to.path === "/login") {
-  //   return navigateTo("/login");
-  // }
-  // if (!session.value) {
-  //   return navigateTo("/login");
-  // }
-
-  // if (userStore.profile) {
-  //   return navigateTo("/");
-  // }
-  // loadProfile();
 });
 
 async function loadProfile() {
@@ -34,11 +20,8 @@ async function loadProfile() {
 
     if (error || !data) {
       console.log({ data, error });
-      return navigateTo("/login");
     }
 
     userStore.profile = data;
-  } catch (error) {
-    return navigateTo("/login");
-  }
+  } catch (error) {}
 }
