@@ -33,7 +33,7 @@ const login = useMutation({
     const { data, error } = await $fetch<{
       data: DashboardUserRow;
       error: Error;
-    }>("/api/login", {
+    }>("/api/signin", {
       method: "post",
       body: { email: event.data.email, password: event.data.password },
     });
