@@ -23,6 +23,26 @@ const defaultColumns = [
     key: "status",
     label: "Status",
   },
+  {
+    key: "day",
+    label: "Day",
+    sortable: true,
+  },
+  {
+    key: "start_time",
+    label: "Start Time",
+    sortable: true,
+  },
+  {
+    key: "end_time",
+    label: "End Time",
+    sortable: true,
+  },
+  {
+    key: "created_at",
+    label: "Created At",
+    sortable: true,
+  },
 ];
 
 const q = ref("");
@@ -199,6 +219,37 @@ function onSelectRow(row: GigViewRow) {
             variant="subtle"
             class="capitalize"
           />
+        </template>
+
+        <template #day-data="{ row }">
+          <p
+            class="text-gray-900 dark:text-white font-medium line-clamp-2 max-w-[300px]"
+          >
+            {{ new Date(row.day).toDateString() }}
+          </p>
+        </template>
+
+        <template #start_time-data="{ row }">
+          <p
+            class="text-gray-900 dark:text-white font-medium line-clamp-2 max-w-[300px]"
+          >
+            {{ new Date(row.start_time).toLocaleTimeString("en-US") }}
+          </p>
+        </template>
+
+        <template #end_time-data="{ row }">
+          <p
+            class="text-gray-900 dark:text-white font-medium line-clamp-2 max-w-[300px]"
+          >
+            {{ new Date(row.end_time).toLocaleTimeString("en-US") }}
+          </p>
+        </template>
+        <template #created_at-data="{ row }">
+          <p
+            class="text-gray-900 dark:text-white font-medium line-clamp-2 max-w-[300px]"
+          >
+            {{ new Date(row.created_at).toDateString() }}
+          </p>
         </template>
       </UTable>
     </UDashboardPanel>

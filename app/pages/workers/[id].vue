@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-screen overflow-y-auto">
+  <div class="w-full max-w-screen h-screen overflow-y-auto">
     <UDashboardNavbar>
       <template #left>
         <UButton
@@ -81,7 +81,7 @@
           </div>
         </UCard>
       </div>
-      <div class="flex-[0.5]">
+      <div class="flex-[0.5] max-w-[100%]">
         <USkeleton
           v-if="isLoadingGigs"
           class="h-full w-full"
@@ -106,7 +106,7 @@
           </div>
         </UCard>
       </div>
-      <div class="flex-1">
+      <div class="flex-1 max-w-[100%]">
         <USkeleton
           v-if="isLoadingPayouts"
           class="h-full w-full"

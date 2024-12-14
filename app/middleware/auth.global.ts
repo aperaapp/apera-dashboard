@@ -1,24 +1,29 @@
 import type { Database } from "~/types/supabase.types";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  const session = useSupabaseSession();
-
   const userStore = useUserStore();
 
+  if (userStore.profile) return;
+  loadProfile();
+  console.log({ to });
+
+  // if (to.path === "/login") {
+  //   return navigateTo("/login");
+  // }
+  // if (!session.value) {
+  //   return navigateTo("/login");
+  // }
+
+  // if (userStore.profile) {
+  //   return navigateTo("/");
+  // }
+  // loadProfile();
+});
+
+async function loadProfile() {
   const client = useSupabaseClient<Database>();
   const user = useSupabaseUser();
-
-  console.log({ to });
-  if (to.path === "login") {
-    return;
-  }
-  if (!session.value) {
-    return navigateTo("/login");
-  }
-
-  if (userStore.profile) {
-    return;
-  }
+  const userStore = useUserStore();
   try {
     // fetch profile
     const { data, error } = await client
@@ -36,4 +41,4 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   } catch (error) {
     return navigateTo("/login");
   }
-});
+}

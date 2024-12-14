@@ -23,6 +23,21 @@ const defaultColumns = [
     key: "status",
     label: "Status",
   },
+  {
+    key: "day",
+    label: "Day",
+    sortable: true,
+  },
+  {
+    key: "start_time",
+    label: "Start Time",
+    sortable: true,
+  },
+  {
+    key: "end_time",
+    label: "End Time",
+    sortable: true,
+  },
 ];
 
 const q = ref("");
@@ -185,6 +200,7 @@ function onSelectRow(row: GigViewRow) {
             </UTooltip>
           </div>
         </template>
+
         <template #title-data="{ row }">
           <p
             class="text-gray-900 dark:text-white font-medium line-clamp-2 max-w-[300px]"
@@ -192,6 +208,7 @@ function onSelectRow(row: GigViewRow) {
             {{ row.title }}
           </p>
         </template>
+
         <template #status-data="{ row }">
           <UBadge
             :label="row.status.replace('_', ' ')"
@@ -199,6 +216,30 @@ function onSelectRow(row: GigViewRow) {
             variant="subtle"
             class="capitalize"
           />
+        </template>
+
+        <template #day-data="{ row }">
+          <p
+            class="text-gray-900 dark:text-white font-medium line-clamp-2 max-w-[300px]"
+          >
+            {{ new Date(row.day).toDateString() }}
+          </p>
+        </template>
+
+        <template #start_time-data="{ row }">
+          <p
+            class="text-gray-900 dark:text-white font-medium line-clamp-2 max-w-[300px]"
+          >
+            {{ new Date(row.start_time).toLocaleTimeString("en-US") }}
+          </p>
+        </template>
+
+        <template #end_time-data="{ row }">
+          <p
+            class="text-gray-900 dark:text-white font-medium line-clamp-2 max-w-[300px]"
+          >
+            {{ new Date(row.end_time).toLocaleTimeString("en-US") }}
+          </p>
         </template>
       </UTable>
     </UDashboardPanel>

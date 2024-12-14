@@ -47,6 +47,11 @@
         />
       </ListItem>
     </div>
+    <ListItem
+      label="Start Date"
+      :value="new Date(gig.start_time).toLocaleDateString('en-US')"
+      class="flex-1"
+    />
     <div class="flex">
       <ListItem
         label="Start Time"

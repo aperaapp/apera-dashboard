@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     "@hebilicious/vue-query-nuxt",
     "vue-sonner/nuxt",
     "@pinia/nuxt",
+    "pinia-plugin-persistedstate/nuxt",
   ],
 
   ui: {
@@ -40,7 +41,7 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   supabase: {
-    redirect: true,
+    redirect: false,
   },
   eslint: {
     config: {
