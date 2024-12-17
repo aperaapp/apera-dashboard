@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "vue-sonner/nuxt",
     "@pinia/nuxt",
     "pinia-plugin-persistedstate/nuxt",
+    "@nuxthub/core",
   ],
 
   ui: {
