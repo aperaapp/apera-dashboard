@@ -4,6 +4,8 @@ const { isDashboardSearchModalOpen } = useUIState();
 const { metaSymbol } = useShortcuts();
 
 const userStore = useUserStore();
+const supabase = useSupabaseClient();
+const router = useRouter();
 
 const items = computed(() => [
   [
@@ -38,6 +40,12 @@ const items = computed(() => [
     {
       label: "Sign out",
       icon: "i-heroicons-arrow-left-on-rectangle",
+      click: async () => {
+        console.log("Logging out");
+        console.log({ router });
+        await supabase.auth.signOut();
+        router.replace("/");
+      },
     },
   ],
 ]);

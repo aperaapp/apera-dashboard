@@ -1,65 +1,115 @@
 <script setup lang="ts">
-const { isHelpSlideoverOpen } = useDashboard()
-const { metaSymbol } = useShortcuts()
+import type { Database } from "~/types/supabase.types";
+const { isHelpSlideoverOpen } = useDashboard();
+const { metaSymbol } = useShortcuts();
 
-const shortcuts = ref(false)
-const query = ref('')
+const user = useSupabaseUser();
+const client = useSupabaseClient<Database>();
 
-const links = [{
-  label: 'Shortcuts',
-  icon: 'i-heroicons-key',
-  trailingIcon: 'i-heroicons-arrow-right-20-solid',
-  color: 'gray',
-  onClick: () => {
-    shortcuts.value = true
+async function loadProfile() {
+  if (user.value) {
+    const userStore = useUserStore();
+    try {
+      // fetch profile
+      const { data, error } = await client
+        .from("dashboard_users")
+        .select()
+        .eq("id", user.value.id)
+        .single();
+
+      if (error || !data) {
+        console.log({ data, error });
+      }
+
+      userStore.profile = data;
+    } catch (error) {
+      console.error(error);
+    }
   }
-},]
+}
 
-const categories = computed(() => [{
-  title: 'General',
-  items: [
-    { shortcuts: [metaSymbol.value, 'K'], name: 'Command menu' },
-    { shortcuts: ['N'], name: 'Notifications' },
-    { shortcuts: ['?'], name: 'Help & Support' },
-    { shortcuts: ['/'], name: 'Search' }
-  ]
-}, {
-  title: 'Navigation',
-  items: [
-    { shortcuts: ['G', 'H'], name: 'Go to Home' },
-    { shortcuts: ['G', 'I'], name: 'Go to Inbox' },
-    { shortcuts: ['G', 'U'], name: 'Go to Users' },
-    { shortcuts: ['G', 'S'], name: 'Go to Settings' }
-  ]
-}, {
-  title: 'Inbox',
-  items: [
-    { shortcuts: ['↑'], name: 'Prev notification' },
-    { shortcuts: ['↓'], name: 'Next notification' }
-  ]
-}])
+onMounted(() => {
+  loadProfile();
+});
+
+const shortcuts = ref(false);
+const query = ref("");
+
+const links = [
+  {
+    label: "Shortcuts",
+    icon: "i-heroicons-key",
+    trailingIcon: "i-heroicons-arrow-right-20-solid",
+    color: "gray",
+    onClick: () => {
+      shortcuts.value = true;
+    },
+  },
+];
+
+const categories = computed(() => [
+  {
+    title: "General",
+    items: [
+      { shortcuts: [metaSymbol.value, "K"], name: "Command menu" },
+      { shortcuts: ["N"], name: "Notifications" },
+      { shortcuts: ["?"], name: "Help & Support" },
+      { shortcuts: ["/"], name: "Search" },
+    ],
+  },
+  {
+    title: "Navigation",
+    items: [
+      { shortcuts: ["G", "H"], name: "Go to Home" },
+      { shortcuts: ["G", "I"], name: "Go to Inbox" },
+      { shortcuts: ["G", "U"], name: "Go to Users" },
+      { shortcuts: ["G", "S"], name: "Go to Settings" },
+    ],
+  },
+  {
+    title: "Inbox",
+    items: [
+      { shortcuts: ["↑"], name: "Prev notification" },
+      { shortcuts: ["↓"], name: "Next notification" },
+    ],
+  },
+]);
 
 const filteredCategories = computed(() => {
-  return categories.value.map(category => ({
-    title: category.title,
-    items: category.items.filter((item) => {
-      return item.name.search(new RegExp(query.value, 'i')) !== -1
-    })
-  })).filter(category => !!category.items.length)
-})
+  return categories.value
+    .map((category) => ({
+      title: category.title,
+      items: category.items.filter((item) => {
+        return item.name.search(new RegExp(query.value, "i")) !== -1;
+      }),
+    }))
+    .filter((category) => !!category.items.length);
+});
 </script>
 
 <template>
   <UDashboardSlideover v-model="isHelpSlideoverOpen">
     <template #title>
-      <UButton v-if="shortcuts" color="gray" variant="ghost" size="sm" icon="i-heroicons-arrow-left-20-solid"
-        @click="shortcuts = false" />
+      <UButton
+        v-if="shortcuts"
+        color="gray"
+        variant="ghost"
+        size="sm"
+        icon="i-heroicons-arrow-left-20-solid"
+        @click="shortcuts = false"
+      />
 
-      {{ shortcuts ? 'Shortcuts' : 'Help & Support' }}
+      {{ shortcuts ? "Shortcuts" : "Help & Support" }}
     </template>
 
     <div v-if="shortcuts" class="space-y-6">
-      <UInput v-model="query" icon="i-heroicons-magnifying-glass" placeholder="Search..." autofocus color="gray" />
+      <UInput
+        v-model="query"
+        icon="i-heroicons-magnifying-glass"
+        placeholder="Search..."
+        autofocus
+        color="gray"
+      />
 
       <div v-for="(category, index) in filteredCategories" :key="index">
         <p class="mb-3 text-sm text-gray-900 dark:text-white font-semibold">
@@ -67,8 +117,14 @@ const filteredCategories = computed(() => {
         </p>
 
         <div class="space-y-2">
-          <div v-for="(item, i) in category.items" :key="i" class="flex items-center justify-between">
-            <span class="text-sm text-gray-500 dark:text-gray-400">{{ item.name }}</span>
+          <div
+            v-for="(item, i) in category.items"
+            :key="i"
+            class="flex items-center justify-between"
+          >
+            <span class="text-sm text-gray-500 dark:text-gray-400">{{
+              item.name
+            }}</span>
 
             <div class="flex items-center justify-end flex-shrink-0 gap-0.5">
               <UKbd v-for="(shortcut, j) in item.shortcuts" :key="j">
@@ -80,7 +136,12 @@ const filteredCategories = computed(() => {
       </div>
     </div>
     <div v-else class="flex flex-col gap-y-3">
-      <UButton v-for="(link, index) in links" :key="index" color="white" v-bind="link" />
+      <UButton
+        v-for="(link, index) in links"
+        :key="index"
+        color="white"
+        v-bind="link"
+      />
     </div>
   </UDashboardSlideover>
 </template>

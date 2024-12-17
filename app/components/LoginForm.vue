@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from "#ui/types";
-import type { Database } from "~/types/supabase.types";
 import type { DashboardUserRow } from "~/types/db.types";
 import z from "zod";
 
@@ -47,7 +46,7 @@ const login = useMutation({
   onSuccess: (profile) => {
     console.log("Login succesful");
     userStore.profile = profile;
-    router.push("/");
+    router.push("/dashboard");
   },
   onError: (error) => {
     $toast.error("Error", { description: error.message });
