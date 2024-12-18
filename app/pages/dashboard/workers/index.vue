@@ -80,7 +80,7 @@ const selectedWorker = ref<WorkerRow | null>(null)
 const showWorkerDetails = ref(false)
 const router = useRouter()
 function onSelectRow(row: WorkerRow) {
-  router.push(`/workers/${row.id}`)
+  router.push(`/dashboard/workers/${row.id}`)
   // selectedWorker.value = row
   // showWorkerDetails.value = true
 }
