@@ -93,7 +93,7 @@ const showBusinessDetails = ref(false)
 const router = useRouter()
 
 function onSelectRow(row: BusinessRow) {
-  router.push(`/business/${row.id}`)
+  router.push(`/dashboard/business/${row.id}`)
   // selectedBusiness.value = row
   // showBusinessDetails.value = true
 }
