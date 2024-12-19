@@ -25,7 +25,7 @@
       >
         <UButton
           label="Open Profile"
-          :to="`/workers/${gig.matched_worker_id}`"
+          :to="`/dashboard/workers/${gig.matched_worker_id}`"
           variant="soft"
           :ui="{ rounded: 'rounded-full' }"
           size="xs"
@@ -39,7 +39,7 @@
       >
         <UButton
           label="Open Profile"
-          :to="`/workers/${gig.matched_worker_id}`"
+          :to="`/dashboard/workers/${gig.matched_worker_id}`"
           variant="soft"
           :ui="{ rounded: 'rounded-full' }"
           size="xs"
