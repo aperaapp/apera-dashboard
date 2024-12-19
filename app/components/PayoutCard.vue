@@ -20,19 +20,19 @@
       <div class="flex gap-2 items-center justify-center p-2">
         <UButton
           label="Go to Worker"
-          :to="`/workers/${payout.worker_id}`"
+          :to="`/dashboard/workers/${payout.worker_id}`"
           variant="soft"
           icon="i-solar-user-hands-outline"
         />
         <UButton
           label="Go to Business"
-          :to="`/business/${payout.business_id}`"
+          :to="`/dashboard/business/${payout.business_id}`"
           variant="soft"
           icon="i-solar-shop-linear"
         />
         <UButton
           label="Go to Gig"
-          :to="`/gigs?id=${payout.gig_id}`"
+          :to="`/dashboard/gigs?id=${payout.gig_id}`"
           variant="soft"
           icon="i-solar-inbox-unread-linear"
         />
