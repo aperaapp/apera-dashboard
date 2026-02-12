@@ -10,7 +10,7 @@
     "postinstall": "patch-package",
     "lint": "eslint .",
     "typecheck": "nuxt typecheck",
-    "gen-ts": "npx --yes supabase gen types typescript --project-id kribzskfrehoddvzebjm --schema public > ./app/types/supabase.types.ts"
+    "gen-ts": "npx --yes supabase gen types typescript --project-id yrkpgoovsicngdnbqxsi --schema public > ./app/types/supabase.types.ts"
   },
   "dependencies": {
     "@hebilicious/vue-query-nuxt": "^0.3.0",
