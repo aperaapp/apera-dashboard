@@ -1,0 +1,1 @@
+import{_ as t}from"./BPSjapET.js";import{d as a,r as o,o as r,c as n}from"./B3aLlcwb.js";const d=a({__name:"notifications",setup(s){return o({email:!0,desktop:!1,product_updates:!0,weekly_digest:!1,important_updates:!0}),(_,i)=>{const e=t;return r(),n(e,{class:"p-0 pb-24 divide-y divide-gray-200 dark:divide-gray-800"})}}});export{d as default};
