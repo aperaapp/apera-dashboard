@@ -1,1 +1,0 @@
-import{_ as o}from"./Bgx2ETgt.js";import{I as s,o as c,c as n,w as r,S as a}from"./B3aLlcwb.js";const _={};function f(t,l){const e=o;return c(),n(e,{class:"flex flex-col items-center justify-center"},{default:r(()=>[a(t.$slots,"default")]),_:3})}const d=s(_,[["render",f]]);export{d as default};
