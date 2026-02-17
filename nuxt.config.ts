@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   },
   extends: ["@nuxt/ui-pro"],
   nitro: {
-    preset: "cloudflare_pages",
+    preset: "vercel",
   },
   modules: [
     "@nuxt/eslint",
